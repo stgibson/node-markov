@@ -18,19 +18,29 @@ class MarkovMachine {
    *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
 
   makeChains() {
-    // don't need to check last word, since no words will follow it
-    for (let i = 0; i < this.words.length - 1; i++) {
+    const numOfWords = this.words.length;
+    for (let i = 0; i < numOfWords; i++) {
       const word = this.words[i];
       const nextWord = this.words[i + 1];
-      if (this.chains[word] && this.chains[word].indexOf(nextWord) === -1) {
-        this.chains[word].push(nextWord);
+      // since no word follows last word, append null
+      if (i === numOfWords - 1) {
+        if (this.chains[word]) {
+          this.chains[word].push(null);
+        }
+        else {
+          this.chains[word] = [null];
+        }
       }
       else {
-        this.chains[word] = [nextWord];
+        if (this.chains[word]) {
+          this.chains[word].push(nextWord);
+        }
+        else {
+          this.chains[word] = [nextWord];
+        }
       }
     }
   }
-
 
   /** return random text from chains */
 
@@ -39,7 +49,8 @@ class MarkovMachine {
     let currWord = this.words[Math.floor(Math.random() * this.words.length)];
     let text = "";
     let numOfWordsUsed = 0;
-    while (numOfWordsUsed < numWords) {
+    // if reach limit for number of words or pick null, end text
+    while (numOfWordsUsed < numWords && currWord != null) {
       // first word isn't preceded by space
       if (numOfWordsUsed === 0) {
         text += currWord;
@@ -52,13 +63,7 @@ class MarkovMachine {
 
       // pick next random word that could follow currWord
       const nextWords = this.chains[currWord];
-      // if no words can follow, end text
-      if (nextWords) {
-        currWord = nextWords[Math.floor(Math.random() * nextWords.length)];
-      }
-      else {
-        break;
-      }
+      currWord = nextWords[Math.floor(Math.random() * nextWords.length)];
     }
 
     return text;
