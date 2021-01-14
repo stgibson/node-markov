@@ -1,0 +1,19 @@
+{
+  "name": "node-markov",
+  "version": "1.0.0",
+  "description": "Node Markov Exercise for Springboard Software Engineer Career Track",
+  "main": "makeText.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stgibson/node-markov.git"
+  },
+  "author": "Sean Gibson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stgibson/node-markov/issues"
+  },
+  "homepage": "https://github.com/stgibson/node-markov#readme"
+}
