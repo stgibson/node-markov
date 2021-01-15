@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/stgibson/node-markov#readme",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "string-strip-html": "^7.0.3"
   }
 }

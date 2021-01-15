@@ -1,5 +1,6 @@
 const fs = require("fs");
 const axios = require("axios");
+const stripHtml = require("string-strip-html");
 const { MarkovMachine } = require("./markov");
 
 const errorMessage =
@@ -30,7 +31,8 @@ async function main() {
     const url = process.argv[3];
     try {
       const resp = await axios.get(url);
-      const markovMachine = new MarkovMachine(resp.data);
+      // create instance of MarkovMachine avioding html tags
+      const markovMachine = new MarkovMachine(stripHtml(resp.data).result);
       console.log(markovMachine.makeText());
     }
     catch(error) {
