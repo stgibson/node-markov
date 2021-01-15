@@ -8,6 +8,7 @@ class MarkovMachine {
   constructor(text) {
     let words = text.split(/[ \r\n]+/);
     this.words = words.filter(c => c !== "");
+    this.capitalizedWords = this.getCapitalizedWords();
     this.chains = {};
     this.makeChains();
   }
@@ -45,8 +46,15 @@ class MarkovMachine {
   /** return random text from chains */
 
   makeText(numWords = 100) {
-    // pick a random starting word
-    let currWord = this.words[Math.floor(Math.random() * this.words.length)];
+    // pick a random starting word (use capitalized word, unless none exist)
+    let currWord;
+    if (this.capitalizedWords.length > 0) {
+      currWord = this.capitalizedWords[Math.floor(Math.random() *
+        this.capitalizedWords.length)];
+    }
+    else {
+      currWord = this.words[Math.floor(Math.random() * this.words.length)];
+    }
     let text = "";
     let numOfWordsUsed = 0;
     // if reach limit for number of words or pick null, end text
@@ -67,6 +75,18 @@ class MarkovMachine {
     }
 
     return text;
+  }
+
+  /** returns array of words that have 1st char capitalized */
+
+  getCapitalizedWords() {
+    const capitalizedWords = [];
+    for (let word of this.words) {
+      if (word[0] >= 'A' && word[0] <= 'Z') {
+        capitalizedWords.push(word);
+      }
+    }
+    return capitalizedWords;
   }
 }
 
