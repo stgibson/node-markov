@@ -130,4 +130,44 @@ describe("makeText(numWords=100) tests (with setup)", () => {
     const textWords = text.split(" ");
     expect(textWords.length).toEqual(limit);
   });
+
+  test("starts with capitalized word if there is one", () => {
+    const words = ["The", "cat", "in", "the", "hat", "is", "in", "the", "hat"];
+    const chains = {
+      The: ["cat"],
+      cat: ["in"],
+      in: ["the", "the"],
+      the: ["hat", "hat"],
+      hat: ["is", null],
+      is: ["in"]
+    };
+    const capitalizedWords = ["The"];
+    markovMachine.words = words;
+    markovMachine.chains = chains;
+    markovMachine.capitalizedWords = capitalizedWords;
+    const text = markovMachine.makeText();
+    expect(text.split(" ")[0]).toEqual("The");
+  });
+});
+
+describe("getCapitalizedWords() tests (with setup)", () => {
+  beforeAll(() => {
+    markovMachine = new MarkovMachine("");
+  });
+
+  test("returns empty array if no words", () => {
+    expect(markovMachine.getCapitalizedWords()).toEqual([]);
+  });
+
+  test("returns empty array if no capital words", () => {
+    const words = ["the", "cat", "in", "the", "hat"];
+    markovMachine.words = words;
+    expect(markovMachine.getCapitalizedWords()).toEqual([]);
+  });
+
+  test("returns array of capitalized words", () => {
+    const words = ["The", "Cat", "in", "the", "Hat"];
+    markovMachine.words = words;
+    expect(markovMachine.getCapitalizedWords()).toEqual(["The", "Cat", "Hat"]);
+  });
 });
